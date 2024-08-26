@@ -13,11 +13,14 @@ const AdminSignin = () => {
     const [error, setError] = useState(null)
     const navigate = useNavigate() 
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     axios.defaults.withCredentials = true
 
     const handleSignIn = (event) => {
         event.preventDefault()
-        axios.post('http://localhost:4000/auth/adminLogin', values)
+        axios.post(`${API_URL}/auth/adminLogin`, values)
         .then(result => {
             if (result.data.loginStatus) {
                 localStorage.setItem('valid', true)

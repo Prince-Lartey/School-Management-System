@@ -9,9 +9,10 @@ import { studentRouter } from "./Routes/studentRoute.js";
 
 const app = express()
 app.use(cors({
-    origin: ["http://localhost:5173"],
+    origin: ["https://school-management-system-rho-orpin.vercel.app"],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    credentials: true,
+    optionsSuccessStatus: 200
 }))
 app.use(express.json())
 app.use(cookieParser()) 
