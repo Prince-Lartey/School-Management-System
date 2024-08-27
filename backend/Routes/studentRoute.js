@@ -147,15 +147,8 @@ router.get('/student-exam-results', (req, res) => {
 
 // Route to get attendance for the logged-in student
 router.get('/attendance_summary', (req, res) => {
-    // const token = req.cookies.token;
-    // if (!token) return res.json({ Status: false, Error: 'No token provided' });
-
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.json({ Status: false, Error: 'No token provided' });
-    }
-
-    const token = authHeader.split(' ')[1];
+    const token = req.cookies.token;
+    if (!token) return res.json({ Status: false, Error: 'No token provided' });
 
     jwt.verify(token, 'jwt_secret_key', (err, decoded) => {
         if (err) return res.json({ Status: false, Error: 'Failed to authenticate token' });

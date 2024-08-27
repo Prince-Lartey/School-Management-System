@@ -17,15 +17,15 @@ const AttendanceSummary = () => {
     useEffect(() => {
         const fetchAttendance = async () => {
             try {
-                const token = document.cookie.match(new RegExp('(^| )token=([^;]+)'))?.[2];
-                if (!token) {
-                    setError('No token provided.');
-                    setLoading(false);
-                    return;
-                }
+                // const token = document.cookie.match(new RegExp('(^| )token=([^;]+)'))?.[2];
+                // if (!token) {
+                //     setError('No token provided.');
+                //     setLoading(false);
+                //     return;
+                // }
 
                 const response = await axios.get(`${API_URL}/student/attendance_summary`, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    // headers: { Authorization: `Bearer ${token}` },
                     withCredentials: true // Ensure cookies are sent with the request
                 });
                 if (response.data.Status) {
