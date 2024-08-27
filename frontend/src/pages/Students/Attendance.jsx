@@ -13,6 +13,13 @@ const AttendanceSummary = () => {
 
     // Get the API URL from the environment variable
     const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
+    // Function to get the value of a specific cookie
+    const getCookie = (name) => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    };
     
     useEffect(() => {
         const fetchAttendance = async () => {
@@ -24,8 +31,15 @@ const AttendanceSummary = () => {
                 //     return;
                 // }
 
+                const token = getCookie('token');
+                if (!token) {
+                    setError('No token provided.');
+                    setLoading(false);
+                    return;
+                }
+
                 const response = await axios.get(`${API_URL}/student/attendance_summary`, {
-                    // headers: { Authorization: `Bearer ${token}` },
+                    headers: { Authorization: `Bearer ${token}` },
                     withCredentials: true // Ensure cookies are sent with the request
                 });
                 if (response.data.Status) {
