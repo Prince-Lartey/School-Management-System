@@ -7,8 +7,12 @@ const StudentProfile = () => {
     const [isOpen, setIsOpen] = useState(true)
 
     const [student, setStudent] = useState([])
+
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     useEffect(() => {
-        axios.get(`http://localhost:4000/student/detail`)
+        axios.get(`${API_URL}/student/detail`)
         .then(result => {
             if (result.data.Status) {
                 setStudent(result.data.Result);

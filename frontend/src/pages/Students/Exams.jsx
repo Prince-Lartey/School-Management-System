@@ -13,8 +13,11 @@ const StudentExams = () => {
 
     const [examResults, setExamResults] = useState([]);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     useEffect(() => {
-        axios.get('http://localhost:4000/student/student-exam-results', { withCredentials: true })
+        axios.get(`${API_URL}/student/student-exam-results`, { withCredentials: true })
             .then(response => {
                 if (response.data.Status) {
                     setExamResults(response.data.Result);

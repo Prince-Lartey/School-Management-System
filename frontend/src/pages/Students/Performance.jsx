@@ -12,9 +12,12 @@ const StudentPerformance = () => {
 
     const [gradePerformanceData, setGradePerformanceData] = useState([]);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     useEffect(() => {
         // Fetch student performance data
-        axios.get('http://localhost:4000/auth/grade_performance')
+        axios.get(`${API_URL}/auth/grade_performance`)
             .then(result => {
                 if (result.data.Status) {
                     const gradeData = result.data.GradePerformance;

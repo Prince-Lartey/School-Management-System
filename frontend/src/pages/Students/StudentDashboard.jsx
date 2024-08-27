@@ -23,9 +23,12 @@ const StudentDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [attendanceTotals, setAttendanceTotals] = useState({ totalPresent: 0, totalAbsent: 0, totalRecords: 0 })
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     // Get events, announcements and total assignment count
     useEffect(() => {
-        axios.get('http://localhost:4000/student/assignmentsCount', { withCredentials: true })
+        axios.get(`${API_URL}/student/assignmentsCount`, { withCredentials: true })
             .then(response => {
                 if (response.data.Status) {
                     setAssignmentCount(response.data.Result);
@@ -35,26 +38,26 @@ const StudentDashboard = () => {
             })
             .catch(error => console.log(error));
 
-        axios.get('http://localhost:4000/auth/events')
+        axios.get(`${API_URL}/auth/events`)
             .then(result => {
                 if (result.data.Status) setEvents(result.data.Result);
             })
             .catch(error => console.log(error));
 
-        axios.get('http://localhost:4000/auth/announcement')
+        axios.get(`${API_URL}/auth/announcement`)
             .then(result => {
                 if (result.data.Status) setAnnouncements(result.data.Result);
             })
             .catch(error => console.log(error));
 
-        axios.get('http://localhost:4000/auth/student_count_by_grade')
+        axios.get(`${API_URL}/auth/student_count_by_grade`)
             .then(result => {
                 if (result.data.Status) setStudentCountsByGrade(result.data.Result);
             })
             .catch(error => console.log(error));
 
             // Fetch student performance data
-        axios.get('http://localhost:4000/auth/grade_performance')
+        axios.get(`${API_URL}/auth/grade_performance`)
         .then(result => {
             if (result.data.Status) {
                 const gradeData = result.data.GradePerformance;
@@ -68,7 +71,7 @@ const StudentDashboard = () => {
         .catch(error => console.log(error));
 
         // Fetch gender distribution data
-        axios.get('http://localhost:4000/auth/student_gender_distribution')
+        axios.get(`${API_URL}/auth/student_gender_distribution`)
             .then(result => {
                 if (result.data.Status) {
                     setMaleCount(result.data.maleCount);
@@ -89,7 +92,7 @@ const StudentDashboard = () => {
                     return;
                 }
 
-                const response = await axios.get('http://localhost:4000/student/attendance_summary', {
+                const response = await axios.get(`${API_URL}/student/attendance_summary`, {
                     headers: { Authorization: `Bearer ${token}` },
                     withCredentials: true // Ensure cookies are sent with the request
                 });
@@ -114,7 +117,7 @@ const StudentDashboard = () => {
     // Get student total score
     const [examResults, setExamResults] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:4000/student/student-exam-results', { withCredentials: true })
+        axios.get(`${API_URL}/student/student-exam-results`, { withCredentials: true })
             .then(response => {
                 if (response.data.Status) {
                     setExamResults(response.data.Result);

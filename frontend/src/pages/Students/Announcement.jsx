@@ -6,9 +6,12 @@ import axios from 'axios'
 const StudentAnnouncement = () => {
     const [isOpen, setIsOpen] = useState(true)
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     const [announcement, setAnnouncement] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/announcement')
+        axios.get(`${API_URL}/auth/announcement`)
         .then(result => {
             if(result.data.Status) {
                 setAnnouncement(result.data.Result)

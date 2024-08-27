@@ -9,8 +9,11 @@ const StudentAssignment = () => {
 
     const [assignments, setAssignments] = useState([]);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     useEffect(() => {
-        axios.get('http://localhost:4000/student/assignments', { withCredentials: true })
+        axios.get(`${API_URL}/student/assignments`, { withCredentials: true })
             .then(response => {
                 console.log(response.data)
                 if (response.data.Status) {

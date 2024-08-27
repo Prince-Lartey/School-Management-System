@@ -11,6 +11,9 @@ const AttendanceSummary = () => {
     const [loading, setLoading] = useState(true);
     const [attendanceTotals, setAttendanceTotals] = useState({ totalPresent: 0, totalAbsent: 0, totalRecords: 0 })
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+    
     useEffect(() => {
         const fetchAttendance = async () => {
             try {
@@ -21,7 +24,7 @@ const AttendanceSummary = () => {
                     return;
                 }
 
-                const response = await axios.get('http://localhost:4000/student/attendance_summary', {
+                const response = await axios.get(`${API_URL}/student/attendance_summary`, {
                     headers: { Authorization: `Bearer ${token}` },
                     withCredentials: true // Ensure cookies are sent with the request
                 });

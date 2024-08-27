@@ -8,6 +8,9 @@ import { FaChartBar, FaChartLine, FaSignOutAlt } from 'react-icons/fa'
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
     const navigate = useNavigate()
+
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
     
     const toggleSidebar = () => {
         setIsOpen(!isOpen)
@@ -15,7 +18,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
     axios.defaults.withCredentials = true
     const handleLogout = () => {
-        axios.get('http://localhost:4000/student/logout')
+        axios.get(`${API_URL}/student/logout`)
         .then(result => {
             if (result.data.Status) {
                 localStorage.clear();

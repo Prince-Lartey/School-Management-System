@@ -13,9 +13,12 @@ const StudentLibrary = () => {
 
     const [addBook, setAddBook] = useState([])
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     useEffect(() => {
         // Retrieve books from database
-        axios.get('http://localhost:4000/auth/book')
+        axios.get(`${API_URL}/auth/book`)
         .then(result => {
             if(result.data.Status) {
                 setAddBook(result.data.Result)
@@ -26,7 +29,7 @@ const StudentLibrary = () => {
         .catch(error => console.log(error))
 
         // Retrieve borrow requests for notifications
-        axios.get('http://localhost:4000/student/borrow_requests')
+        axios.get(`${API_URL}/student/borrow_requests`)
             .then(result => {
                 if (result.data.Status) {
                     setBorrowRequests(result.data.Requests);
@@ -49,7 +52,7 @@ const StudentLibrary = () => {
     }, [])
 
     const handleBorrow = (bookId) => {
-        axios.post('http://localhost:4000/student/borrow_book', { book_id: bookId })
+        axios.post(`${API_URL}/student/borrow_book`, { book_id: bookId })
             .then(result => {
                 if (result.data.Status) {
                     setNotifications(notifications + 1); // Increase the notification count
