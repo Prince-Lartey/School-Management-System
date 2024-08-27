@@ -34,7 +34,7 @@ const AdminDashboard = () => {
             })
             .catch(error => console.log(error));
 
-        axios.get(`${API_URL}/auth/teachers'`)
+        axios.get(`${API_URL}/auth/teachers`)
             .then(result => {
                 if (result.data.Status) setTotalTeachers(result.data.Result.length);
             })
