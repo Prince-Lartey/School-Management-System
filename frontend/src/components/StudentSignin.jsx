@@ -14,11 +14,14 @@ const StudentSignin = () => {
     })
     const [error, setError] = useState(null)
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     axios.defaults.withCredentials = true
 
     const handleSignIn = (event) => {
         event.preventDefault()
-        axios.post('http://localhost:4000/student/studentLogin', values)
+        axios.post(`${API_URL}/student/studentLogin`, values)
         .then(result => {
             if (result.data.loginStatus) {
                 localStorage.setItem('valid', true)
