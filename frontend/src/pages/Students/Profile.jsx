@@ -12,7 +12,9 @@ const StudentProfile = () => {
     const API_URL = import.meta.env.VITE_PROD_BASE_URL;
 
     useEffect(() => {
-        axios.get(`${API_URL}/student/detail`)
+        axios.get(`${API_URL}/student/detail`, {
+            withCredentials: true // Ensure cookies are sent with the request
+        })
         .then(result => {
             if (result.data.Status) {
                 setStudent(result.data.Result);

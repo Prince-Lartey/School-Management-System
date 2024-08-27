@@ -26,7 +26,11 @@ router.post('/studentLogin', (req, res) => {
                         "jwt_secret_key",
                         { expiresIn: "1h" }
                     )
-                    res.cookie('token', token)
+                    res.cookie('token', token, {
+                        httpOnly: true,
+                        secure: true, // Ensure this is true if using HTTPS
+                        sameSite: 'None' // This allows cookies to be sent in cross-origin requests
+                    });
                     return res.json({ loginStatus: true, registrationNumber: result[0].registrationNumber})
                 }
                 else {
