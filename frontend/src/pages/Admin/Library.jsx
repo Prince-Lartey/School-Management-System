@@ -12,6 +12,9 @@ const Library = () => {
     const [showNotifications, setShowNotifications] = useState(false);
     const [borrowRequests, setBorrowRequests] = useState([]);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     const [library, setLibrary] = useState({
         bookname: '',
         author: ''
@@ -35,7 +38,7 @@ const Library = () => {
             return;
         }
 
-        axios.post('http://localhost:4000/auth/add_book', library)
+        axios.post(`${API_URL}/auth/add_book`, library)
         .then(result => {
             if (result.data.Status) {
 
@@ -65,7 +68,7 @@ const Library = () => {
     const [addBook, setAddBook] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/book')
+        axios.get(`${API_URL}/auth/book`)
         .then(result => {
             if(result.data.Status) {
                 setAddBook(result.data.Result)
@@ -76,7 +79,7 @@ const Library = () => {
         .catch(error => console.log(error))
 
         // Retrieve borrow requests for notifications
-        axios.get('http://localhost:4000/auth/borrow_requests')
+        axios.get(`${API_URL}/auth/borrow_requests`)
         .then(result => {
             if (result.data.Status) {
                 setBorrowRequests(result.data.BorrowRequests);
@@ -93,7 +96,7 @@ const Library = () => {
     };
 
     const handleAcceptRequest = (requestId) => {
-        axios.post(`http://localhost:4000/auth/accept_borrow_request/${requestId}`)
+        axios.post(`${API_URL}/auth/accept_borrow_request/${requestId}`)
             .then(result => {
                 if (result.data.Status) {
                     setBorrowRequests(borrowRequests.filter(request => request.id !== requestId));
@@ -117,7 +120,7 @@ const Library = () => {
     };
 
     const handleRejectRequest = (requestId) => {
-        axios.post(`http://localhost:4000/auth/decline_borrow_request/${requestId}`)
+        axios.post(`${API_URL}/auth/decline_borrow_request/${requestId}`)
             .then(result => {
                 if (result.data.Status) {
                     setBorrowRequests(borrowRequests.filter(request => request.id !== requestId));
@@ -146,7 +149,7 @@ const Library = () => {
 
     const handleDelete = () => {
         
-        axios.delete('http://localhost:4000/auth/delete_book/' + bookToDelete)
+        axios.delete(`${API_URL}/auth/delete_book/` + bookToDelete)
         .then(result => {
             if (result.data.Status){
                 toast.success('Book removed successfully!', {

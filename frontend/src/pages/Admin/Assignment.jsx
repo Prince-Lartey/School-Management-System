@@ -13,8 +13,12 @@ const Assignment = () => {
     const [subjects, setSubjects] = useState([])
     const [grades, setGrades] = useState([])
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
+
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/subject')
+        axios.get(`${API_URL}/auth/subject`)
         .then(result => {
             if(result.data.Status) {
                 setSubjects(result.data.Result)
@@ -26,7 +30,7 @@ const Assignment = () => {
     }, [])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/grade')
+        axios.get(`${API_URL}/auth/grade`)
         .then(result => {
             if(result.data.Status) {
                 setGrades(result.data.Result)
@@ -63,7 +67,7 @@ const Assignment = () => {
             return;
         }
 
-        axios.post('http://localhost:4000/auth/add_assignment', assignment)
+        axios.post(`${API_URL}/auth/add_assignment`, assignment)
         .then(result => {
             if (result.data.Status) {
                 toast.success('Assignment details posted successfully!', {
@@ -86,7 +90,7 @@ const Assignment = () => {
     const [addAssignment, setAddAssignment] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/assignment')
+        axios.get(`${API_URL}/auth/assignment`)
         .then(result => {
             if(result.data.Status) {
                 setAddAssignment(result.data.Result)
@@ -125,7 +129,7 @@ const Assignment = () => {
             return;
         }
 
-        axios.put(`http://localhost:4000/auth/update_assignment/${assignmentToEdit.id}`, assignmentToEdit)
+        axios.put(`${API_URL}/auth/update_assignment/${assignmentToEdit.id}`, assignmentToEdit)
         .then(result => {
             if (result.data.Status) {
             toast.success('Assignment updated successfully!', {
@@ -152,7 +156,7 @@ const Assignment = () => {
 
     const handleDelete = () => {
         
-        axios.delete('http://localhost:4000/auth/delete_assignment/' + assignmentToDelete)
+        axios.delete(`${API_URL}/auth/delete_assignment/` + assignmentToDelete)
         .then(result => {
             if (result.data.Status){
                 toast.success('Assignment removed successfully!', {

@@ -19,8 +19,11 @@ const Teachers = () => {
         subjects: []
     });
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/subject')
+        axios.get(`${API_URL}/auth/subject`)
             .then(result => {
                 if (result.data.Status) {
                     setSubjects(result.data.Result);
@@ -60,7 +63,7 @@ const Teachers = () => {
             return;
         }
 
-        axios.post('http://localhost:4000/auth/add_teacher', teacher)
+        axios.post(`${API_URL}/auth/add_teacher`, teacher)
             .then(result => {
                 if (result.data.Status) {
                     toast.success('Teacher added successfully!', {
@@ -98,7 +101,7 @@ const Teachers = () => {
 
     const [teachers, setTeachers] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/teachers')
+        axios.get(`${API_URL}/auth/teachers`)
             .then(result => {
                 if (result.data.Status) {
                     console.log(result.data.Result)
@@ -117,7 +120,7 @@ const Teachers = () => {
 
     const handleDelete = () => {
         
-        axios.delete('http://localhost:4000/auth/delete_teacher/' + teacherToDelete)
+        axios.delete(`${API_URL}/auth/delete_teacher/` + teacherToDelete)
         .then(result => {
             if (result.data.Status){
                 toast.success('Teacher removed successfully!', {

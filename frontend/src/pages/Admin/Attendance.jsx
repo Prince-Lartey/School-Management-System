@@ -12,9 +12,12 @@ const Attendance = () => {
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [isAttendanceTaken, setIsAttendanceTaken] = useState(false);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     useEffect(() => {
         // Fetch students based on grade_id
-        axios.get('http://localhost:4000/auth/student', { params: { grade_id: 1 } })
+        axios.get(`${API_URL}/auth/student`, { params: { grade_id: 1 } })
             .then(result => {
                 if (result.data.Status) {
                     setStudents(result.data.Result);
@@ -30,14 +33,14 @@ const Attendance = () => {
             })
             .catch(error => console.log(error));
 
-            // Check if attendance is already taken for the selected date
-            axios.get('http://localhost:4000/auth/check_attendance', { params: { date } })
-                .then(result => {
-                    if (result.data.Status && result.data.AttendanceTaken) {
-                        setIsAttendanceTaken(true);
-                    }
-                })
-                .catch(error => console.log(error));
+        // Check if attendance is already taken for the selected date
+        axios.get(`${API_URL}/auth/check_attendance`, { params: { date } })
+            .then(result => {
+                if (result.data.Status && result.data.AttendanceTaken) {
+                    setIsAttendanceTaken(true);
+                }
+            })
+            .catch(error => console.log(error));
     }, [date]);
 
     const handleStatusChange = (registrationNumber, status) => {
@@ -53,7 +56,7 @@ const Attendance = () => {
             return;
         }
 
-        axios.post('http://localhost:4000/auth/add_attendance', { date, attendance })
+        axios.post(`${API_URL}/auth/add_attendance`, { date, attendance })
             .then(result => {
                 if (result.data.Status) {
                     toast.success('Attendance submitted successfully!', {

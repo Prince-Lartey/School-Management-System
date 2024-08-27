@@ -24,39 +24,42 @@ const AdminDashboard = () => {
     const [maleCount, setMaleCount] = useState(0);
     const [femaleCount, setFemaleCount] = useState(0);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/student')
+        axios.get(`${API_URL}/auth/student`)
             .then(result => {
                 if (result.data.Status) setTotalStudents(result.data.Result.length);
             })
             .catch(error => console.log(error));
 
-        axios.get('http://localhost:4000/auth/teachers')
+        axios.get(`${API_URL}/auth/teachers'`)
             .then(result => {
                 if (result.data.Status) setTotalTeachers(result.data.Result.length);
             })
             .catch(error => console.log(error));
 
-        axios.get('http://localhost:4000/auth/grade')
+        axios.get(`${API_URL}/auth/grade`)
             .then(result => {
                 if (result.data.Status) setTotalGrades(result.data.Result.length);
             })
             .catch(error => console.log(error));
 
-        axios.get('http://localhost:4000/auth/events')
+        axios.get(`${API_URL}/auth/events`)
             .then(result => {
                 if (result.data.Status) setEvents(result.data.Result);
             })
             .catch(error => console.log(error));
 
-        axios.get('http://localhost:4000/auth/best_performers')
+        axios.get(`${API_URL}/auth/best_performers`)
             .then(result => {
                 if (result.data.Status) setBestPerformers(result.data.Result);
             })
             .catch(error => console.log(error));
 
         // Fetch attendance summary by date
-        axios.get('http://localhost:4000/auth/attendance_summary_by_date', { cache: 'no-cache' })
+        axios.get(`${API_URL}/auth/attendance_summary_by_date`, { cache: 'no-cache' })
             .then(result => {
                 if (result.data.Status) {
                     console.log(result.data.Result)
@@ -65,14 +68,14 @@ const AdminDashboard = () => {
             })
             .catch(error => console.log(error));
 
-        axios.get('http://localhost:4000/auth/student_count_by_grade')
+        axios.get(`${API_URL}/auth/student_count_by_grade`)
             .then(result => {
                 if (result.data.Status) setStudentCountsByGrade(result.data.Result);
             })
             .catch(error => console.log(error));
 
         // Fetch attendance summary for today
-        axios.get('http://localhost:4000/auth/attendance_summary_today')
+        axios.get(`${API_URL}/auth/attendance_summary_today`)
             .then(result => {
                 if (result.data.Status) {
                     setTotalPresentToday(result.data.Present);
@@ -82,7 +85,7 @@ const AdminDashboard = () => {
             .catch(error => console.log(error));
 
         // Fetch gender distribution data
-        axios.get('http://localhost:4000/auth/student_gender_distribution')
+        axios.get(`${API_URL}/auth/student_gender_distribution`)
             .then(result => {
                 if (result.data.Status) {
                     setMaleCount(result.data.maleCount);

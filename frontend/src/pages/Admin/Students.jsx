@@ -17,6 +17,9 @@ const generateRegistrationNumber = () => {
 
 const Students = () => {
     const [isOpen, setIsOpen] = useState(true);
+
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
     
     //Retrieve generated numbers
     const [registrationNumber, setRegistrationNumber] = useState('');
@@ -31,7 +34,7 @@ const Students = () => {
     const [gender, setGender] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/grade')
+        axios.get(`${API_URL}/auth/grade`)
         .then(result => {
             if(result.data.Status) {
                 setGrades(result.data.Result)
@@ -41,7 +44,7 @@ const Students = () => {
         })
         .catch(error => console.log(error))
 
-        axios.get('http://localhost:4000/auth/gender')
+        axios.get(`${API_URL}/auth/gender`)
         .then(result => {
             if(result.data.Status) {
                 setGender(result.data.Result)
@@ -81,7 +84,7 @@ const Students = () => {
     }
         const studentWithNumber = { ...student, registrationNumber };
 
-        axios.post('http://localhost:4000/auth/add_student', studentWithNumber)
+        axios.post(`${API_URL}/auth/add_student`, studentWithNumber)
         .then(result => {
             if (result.data.Status) {
                 toast.success('Student added successfully!', {
@@ -104,7 +107,7 @@ const Students = () => {
     const [addStudent, setAddStudent] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/student')
+        axios.get(`${API_URL}/auth/student`)
         .then(result => {
             if(result.data.Status) {
                 setAddStudent(result.data.Result)
@@ -121,7 +124,7 @@ const Students = () => {
 
     const handleDelete = () => {
         
-        axios.delete('http://localhost:4000/auth/delete_student/' + studentToDelete)
+        axios.delete(`${API_URL}/auth/delete_student/` + studentToDelete)
         .then(result => {
             if (result.data.Status){
                 toast.success('Student removed successfully!', {
@@ -162,7 +165,7 @@ const Students = () => {
     const [studentDetails, setStudentDetails] = useState({});
 
     const openViewModal = (registrationNumber) => {
-        axios.get(`http://localhost:4000/auth/student/${registrationNumber}`)
+        axios.get(`${API_URL}/auth/student/${registrationNumber}`)
         .then(result => {
             if (result.data.Status) {
             setStudentDetails(result.data.Result[0]);
@@ -182,7 +185,7 @@ const Students = () => {
     const [studentToEdit, setStudentToEdit] = useState({});
 
     const openEditModal = (registrationNumber) => {
-        axios.get(`http://localhost:4000/auth/student/${registrationNumber}`)
+        axios.get(`${API_URL}/auth/student/${registrationNumber}`)
             .then(result => {
                 if (result.data.Status) {
                     setStudentToEdit(result.data.Result[0]);
@@ -214,7 +217,7 @@ const Students = () => {
             return;
         }
 
-        axios.put(`http://localhost:4000/auth/edit_student/${studentToEdit.registrationNumber}`, studentToEdit)
+        axios.put(`${API_URL}/auth/edit_student/${studentToEdit.registrationNumber}`, studentToEdit)
             .then(result => {
                 if (result.data.Status) {
                     toast.success('Student updated successfully!', { position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined });

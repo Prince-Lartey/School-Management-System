@@ -19,6 +19,9 @@ const generateRegistrationCode = () => {
 const CreateExams = () => {
     const [isOpen, setIsOpen] = useState(true)
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     //Generate random 5 character code
     const [registrationCode, setRegistrationCode] = useState('');
 
@@ -34,6 +37,7 @@ const CreateExams = () => {
         registrationCode: '',
         marks: ''
     })
+    
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -54,7 +58,7 @@ const CreateExams = () => {
         
         const examWithCode = { ...exam, registrationCode };
 
-        axios.post('http://localhost:4000/auth/create_exam', examWithCode)
+        axios.post(`${API_URL}/auth/create_exam`, examWithCode)
         .then(result => {
             if (result.data.Status) {
                 toast.success('Exam details posted successfully!', {
@@ -77,7 +81,7 @@ const CreateExams = () => {
     const [addExam, setAddExam] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/exam')
+        axios.get(`${API_URL}/auth/exam`)
         .then(result => {
             if(result.data.Status) {
                 setAddExam(result.data.Result)
@@ -92,7 +96,7 @@ const CreateExams = () => {
     const [subjects, setSubjects] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/subject')
+        axios.get(`${API_URL}/auth/subject`)
         .then(result => {
             if(result.data.Status) {
                 setSubjects(result.data.Result)
@@ -108,7 +112,7 @@ const CreateExams = () => {
     const [examToEdit, setExamToEdit] = useState({});
 
     const openEditModal = (registrationCode) => {
-        axios.get(`http://localhost:4000/auth/exam/${registrationCode}`)
+        axios.get(`${API_URL}/auth/exam/${registrationCode}`)
             .then(result => {
                 if (result.data.Status) {
                     setExamToEdit(result.data.Result[0]);
@@ -134,7 +138,7 @@ const CreateExams = () => {
             return;
         }
 
-        axios.put(`http://localhost:4000/auth/edit_exam/${examToEdit.registrationCode}`, examToEdit)
+        axios.put(`${API_URL}/auth/edit_exam/${examToEdit.registrationCode}`, examToEdit)
             .then(result => {
                 if (result.data.Status) {
                     toast.success("Exam updated successfully!", {
@@ -162,7 +166,7 @@ const CreateExams = () => {
 
     const handleDelete = () => {
         
-        axios.delete('http://localhost:4000/auth/delete_exam/' + examToDelete)
+        axios.delete(`${API_URL}/auth/delete_exam/` + examToDelete)
         .then(result => {
             if (result.data.Status){
                 toast.success('Exam removed successfully!', {

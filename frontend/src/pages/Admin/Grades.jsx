@@ -13,6 +13,9 @@ const Grades = () => {
     const [studentsByGrade, setStudentsByGrade] = useState({});
     const [openGradeId, setOpenGradeId] = useState(null);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -29,7 +32,7 @@ const Grades = () => {
             return;
         }
         
-        axios.post('http://localhost:4000/auth/add_grade', { gradeName })
+        axios.post(`${API_URL}/auth/add_grade`, { gradeName })
         .then(result => {
             if (result.data.Status) {
                 toast.success('Grade added successfully!', {
@@ -50,7 +53,7 @@ const Grades = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/grade')
+        axios.get(`${API_URL}/auth/grade`)
         .then(result => {
             if(result.data.Status) {
                 setGrade(result.data.Result)
@@ -68,7 +71,7 @@ const Grades = () => {
             setOpenGradeId(gradeId);
 
             if (!studentsByGrade[gradeId]) {
-                axios.get(`http://localhost:4000/auth/students_by_grade/${gradeId}`)
+                axios.get(`${API_URL}/auth/students_by_grade/${gradeId}`)
                     .then(result => {
                         if (result.data.Status) {
                             setStudentsByGrade(prev => ({

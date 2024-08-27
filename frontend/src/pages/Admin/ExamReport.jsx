@@ -11,9 +11,12 @@ const ExamReport = () => {
     const [report, setReport] = useState([]);
     const [comment, setComment] = useState('');
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     useEffect(() => {
         // Fetch all students
-        axios.get('http://localhost:4000/auth/students')
+        axios.get(`${API_URL}/auth/students`)
             .then(response => {
                 if (response.data.Status) {
                     setStudents(response.data.Students);
@@ -27,7 +30,7 @@ const ExamReport = () => {
         setSelectedStudent(regNumber);
 
         // Fetch exam report for selected student
-        axios.get(`http://localhost:4000/auth/exam-report/${regNumber}`)
+        axios.get(`${API_URL}/auth/exam-report/${regNumber}`)
             .then(response => {
                 if (response.data.Status) {
                     setReport(response.data.Report);

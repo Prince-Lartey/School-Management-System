@@ -9,6 +9,9 @@ const Subject = () => {
     const [subjectName, setSubjectName] = useState('')
     const [subject, setSubject] = useState([])
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -25,7 +28,7 @@ const Subject = () => {
             return;
         }
 
-        axios.post('http://localhost:4000/auth/add_subject', { subjectName })
+        axios.post(`${API_URL}/auth/add_subject`, { subjectName })
         .then(result => {
             if (result.data.Status) {
                 toast.success('Grade added successfully!', {
@@ -45,7 +48,7 @@ const Subject = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/subject')
+        axios.get(`${API_URL}/auth/subject`)
         .then(result => {
             if(result.data.Status) {
                 setSubject(result.data.Result)
