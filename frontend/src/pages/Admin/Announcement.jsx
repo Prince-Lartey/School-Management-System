@@ -9,6 +9,9 @@ const Announcement = () => {
     const [message, setMessage] = useState('')
     const [announcement, setAnnouncement] = useState([])
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -25,7 +28,7 @@ const Announcement = () => {
             return;
         }
 
-        axios.post('http://localhost:4000/auth/add_announcement', { message })
+        axios.post(`${API_URL}/auth/add_announcement`, { message })
         .then(result => {
             if (result.data.Status) {
                 toast.success('Announcement posted successfully!', {
@@ -45,7 +48,7 @@ const Announcement = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/announcement')
+        axios.get(`${API_URL}/auth/announcement`)
         .then(result => {
             if(result.data.Status) {
                 setAnnouncement(result.data.Result)
@@ -62,7 +65,7 @@ const Announcement = () => {
 
     const handleDelete = () => {
         
-        axios.delete('http://localhost:4000/auth/delete_announcement/' + announcementToDelete)
+        axios.delete(`${API_URL}/auth/delete_announcement/` + announcementToDelete)
         .then(result => {
             if (result.data.Status){
                 toast.success('announcement removed successfully!', {
