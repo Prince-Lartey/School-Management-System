@@ -88,9 +88,17 @@ const StudentDashboard = () => {
         })
         .then(response => {
             if (response.data.Status) {
-                console.log('Attendance Totals:', response.data.Totals);
                 setAttendanceRecords(response.data.Result);
-                setAttendanceTotals(response.data.Totals);
+                
+                // Calculate total present and absent
+                const totalPresent = response.data.Result.filter(record => record.status === 'present').length;
+                const totalAbsent = response.data.Result.filter(record => record.status === 'absent').length;
+                
+                setAttendanceTotals({
+                    totalPresent: totalPresent,
+                    totalAbsent: totalAbsent,
+                    totalRecords: response.data.Result.length
+                });
             } else {
                 setError(response.data.Error || 'No records found.');
                 setAttendanceRecords([]);
