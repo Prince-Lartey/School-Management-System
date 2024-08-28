@@ -89,7 +89,6 @@ const StudentDashboard = () => {
         .then(response => {
             if (response.data.Status) {
                 console.log('Attendance Totals:', response.data.Totals);
-                console.log('Attendance Totals:', response.data.Totals.totalPresent)
                 setAttendanceRecords(response.data.Result);
                 setAttendanceTotals(response.data.Totals);
             } else {
