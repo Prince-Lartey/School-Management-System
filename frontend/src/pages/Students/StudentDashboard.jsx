@@ -18,7 +18,7 @@ const StudentDashboard = () => {
     const [maleCount, setMaleCount] = useState(0);
     const [femaleCount, setFemaleCount] = useState(0);
     const [gradePerformanceData, setGradePerformanceData] = useState([]);
-    const [attendanceRecords, setAttendanceRecords] = useState([]);
+    //const [attendanceRecords, setAttendanceRecords] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [attendanceTotals, setAttendanceTotals] = useState({ totalPresent: 0, totalAbsent: 0, totalRecords: 0 })
@@ -88,12 +88,12 @@ const StudentDashboard = () => {
         })
         .then(response => {
             if (response.data.Status) {
-                console.log('Attendance Totals:', response.data.Totals);
-                setAttendanceRecords(response.data.Result);
+                //console.log('Attendance Totals:', response.data.Totals);
+                //setAttendanceRecords(response.data.Result);
                 setAttendanceTotals(response.data.Totals);
             } else {
                 setError(response.data.Error || 'No records found.');
-                setAttendanceRecords([]);
+                //setAttendanceRecords([]);
             }
         })
         .catch(err => {
