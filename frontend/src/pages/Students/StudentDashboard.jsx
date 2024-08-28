@@ -24,7 +24,7 @@ const StudentDashboard = () => {
     const [attendanceTotals, setAttendanceTotals] = useState({ totalPresent: 0, totalAbsent: 0, totalRecords: 0 })
 
     // Get the API URL from the environment variable
-    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+    const API_URL = import.meta.env.VITE_DEV_BASE_URL;
 
     // Get events, announcements and total assignment count
     useEffect(() => {
@@ -88,17 +88,9 @@ const StudentDashboard = () => {
         })
         .then(response => {
             if (response.data.Status) {
+                console.log('Attendance Totals:', response.data.Totals.totalPresent);
                 setAttendanceRecords(response.data.Result);
-                
-                // Calculate total present and absent
-                const totalPresent = response.data.Result.filter(record => record.status === 'present').length;
-                const totalAbsent = response.data.Result.filter(record => record.status === 'absent').length;
-                
-                setAttendanceTotals({
-                    totalPresent: totalPresent,
-                    totalAbsent: totalAbsent,
-                    totalRecords: response.data.Result.length
-                });
+                setAttendanceTotals(response.data.Totals);
             } else {
                 setError(response.data.Error || 'No records found.');
                 setAttendanceRecords([]);
