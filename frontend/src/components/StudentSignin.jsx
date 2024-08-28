@@ -21,7 +21,7 @@ const StudentSignin = () => {
 
     const handleSignIn = (event) => {
         event.preventDefault()
-        axios.post(`${API_URL}/student/studentLogin`, values, , { withCredentials: true })
+        axios.post(`${API_URL}/student/studentLogin`, values, { withCredentials: true })
         .then(result => {
             if (result.data.loginStatus) {
                 localStorage.setItem('valid', true)
