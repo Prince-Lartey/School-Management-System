@@ -12,6 +12,7 @@ const TeacherSignin = () => {
         password: ''
     })
     const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     // Get the API URL from the environment variable
     const API_URL = import.meta.env.VITE_PROD_BASE_URL;
@@ -20,6 +21,8 @@ const TeacherSignin = () => {
 
     const handleSignIn = (event) => {
         event.preventDefault()
+        setLoading(true); // Start loading
+
         axios.post(`${API_URL}/teacher/teacherLogin`, values)
         .then(result => {
             if (result.data.loginStatus) {
@@ -29,8 +32,12 @@ const TeacherSignin = () => {
             else {
                 setError(result.data.Error)
             }
+            setLoading(false); // End loading
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+            console.log(error)
+            setLoading(false); // End loading even if there is an error
+        })
     }
 
     // Make password visible
@@ -57,7 +64,7 @@ const TeacherSignin = () => {
                     </span>
                 </div>
                 
-                <button to="/teacher/dashboard" type='button' onClick={handleSignIn} className='w-full p-3 mt-5 border-none rounded-lg bg-[#636e72] text-white text-lg text-center cursor-pointer transform hover:scale-105 transition-transform duration-300 ease-in-out md:text-base'>Sign In</button>
+                <button to="/teacher/dashboard" type='button' onClick={handleSignIn} className={`w-full p-3 mt-5 border-none rounded-lg ${loading ? 'bg-gray-400 cursor-not-allowed text-white' : 'bg-[#636e72] text-white'} text-lg text-center transform hover:scale-105 transition-transform duration-300 ease-in-out md:text-base`} disabled={loading}>{loading ? 'Loading...' : 'Sign In'}</button>
             </form>
         </div>
     )
