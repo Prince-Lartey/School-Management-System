@@ -10,6 +10,9 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 const Performance = () => {
     const [isOpen, setIsOpen] = useState(true)
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     const [individualPerformanceData, setIndividualPerformanceData] = useState([]);
     const [schoolPerformanceData, setSchoolPerformanceData] = useState({
         averageScore: 0,
@@ -19,7 +22,7 @@ const Performance = () => {
 
     useEffect(() => {
         // Fetch student performance data
-        axios.get('http://localhost:4000/auth/student_performance')
+        axios.get(`${API_URL}/auth/student_performance`)
             .then(result => {
                 if (result.data.Status) {
                     const performanceData = result.data.Result;
@@ -41,7 +44,7 @@ const Performance = () => {
             .catch(error => console.log(error));
 
         // Fetch student performance data
-        axios.get('http://localhost:4000/auth/grade_performance')
+        axios.get(`${API_URL}/auth/grade_performance`)
             .then(result => {
                 if (result.data.Status) {
                     const gradeData = result.data.GradePerformance;

@@ -8,11 +8,14 @@ import { Content } from '../../styles/ExamStyles'
 const TeacherExams = () => {
     const [isOpen, setIsOpen] = useState(true);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     // Retrieve registration code to create a dropdown
     const [exam, setExam] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/exam')
+        axios.get(`${API_URL}/auth/exam`)
         .then(result => {
             if(result.data.Status) {
                 setExam(result.data.Result)
@@ -27,7 +30,7 @@ const TeacherExams = () => {
     const [student, setStudent] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/student')
+        axios.get(`${API_URL}/auth/student`)
         .then(result => {
             if(result.data.Status) {
                 setStudent(result.data.Result)
@@ -49,7 +52,7 @@ const TeacherExams = () => {
         e.preventDefault()
         console.log('Submitting exam score:', examScore);
 
-        axios.post('http://localhost:4000/auth/exam-results', examScore)
+        axios.post(`${API_URL}/auth/exam-results`, examScore)
         .then(result => {
             if (result.data.Status) {
                 toast.success('Score submitted successfully!', {
@@ -74,7 +77,7 @@ const TeacherExams = () => {
 
     const handleFetchResults = (e) => {
         e.preventDefault();
-        axios.get(`http://localhost:4000/auth/exam-results/${selectedExamRegCode}`)
+        axios.get(`${API_URL}/auth/exam-results/${selectedExamRegCode}`)
             .then(result => {
                 if (result.data.Status) {
                     setExamResults(result.data.Result);

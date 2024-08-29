@@ -6,9 +6,12 @@ import axios from 'axios';
 const TeacherProfile = () => {
     const [isOpen, setIsOpen] = useState(true);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     const [teacher, setTeacher] = useState([])
     useEffect(() => {
-        axios.get(`http://localhost:4000/teacher/detail`)
+        axios.get(`${API_URL}/teacher/detail`)
         .then(result => {
             if (result.data.auth) {
                 setTeacher(result.data.teacher);

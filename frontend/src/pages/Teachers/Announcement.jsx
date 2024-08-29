@@ -9,6 +9,8 @@ const TeacherAnnouncement = () => {
     const [message, setMessage] = useState('')
     const [announcement, setAnnouncement] = useState([])
 
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -25,7 +27,7 @@ const TeacherAnnouncement = () => {
             return;
         }
 
-        axios.post('http://localhost:4000/auth/add_announcement', { message })
+        axios.post(`${API_URL}/auth/add_announcement`, { message })
         .then(result => {
             if (result.data.Status) {
                 toast.success('Announcement posted successfully!', {
@@ -45,7 +47,7 @@ const TeacherAnnouncement = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/announcement')
+        axios.get(`${API_URL}/auth/announcement`)
         .then(result => {
             if(result.data.Status) {
                 setAnnouncement(result.data.Result)
@@ -62,7 +64,7 @@ const TeacherAnnouncement = () => {
 
     const handleDelete = () => {
         
-        axios.delete('http://localhost:4000/auth/delete_announcement/' + announcementToDelete)
+        axios.delete(`${API_URL}/auth/delete_announcement/` + announcementToDelete)
         .then(result => {
             if (result.data.Status){
                 toast.success('announcement removed successfully!', {

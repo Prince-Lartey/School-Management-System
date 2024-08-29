@@ -10,6 +10,9 @@ import { ToastContainer, toast } from 'react-toastify';
 const TeacherEvents = () => {
     const [isOpen, setIsOpen] = useState(true);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     const [events, setEvents] = useState([]);
     const [event, setEvent] = useState({
         date: new Date(),
@@ -18,7 +21,7 @@ const TeacherEvents = () => {
     });
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/events')
+        axios.get(`${API_URL}/auth/events`)
             .then(result => {
                 if (result.data.Status) {
                     setEvents(result.data.Result);
@@ -46,7 +49,7 @@ const TeacherEvents = () => {
             return;
         }
 
-        axios.post('http://localhost:4000/auth/add_event', event)
+        axios.post(`${API_URL}/auth/add_event`, event)
             .then(result => {
                 if (result.data.Status) {
                     toast.success('Event added successfully!', {
@@ -71,7 +74,7 @@ const TeacherEvents = () => {
 
     const handleDelete = () => {
         
-        axios.delete('http://localhost:4000/auth/delete_event/' + eventToDelete)
+        axios.delete(`${API_URL}/auth/delete_event/` + eventToDelete)
         .then(result => {
             if (result.data.Status){
                 toast.success('Event removed successfully!', {

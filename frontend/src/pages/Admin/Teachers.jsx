@@ -245,7 +245,7 @@ const Teachers = () => {
 
             {selectedTeacher && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-5 rounded shadow-md w-1/2">
+                    <div className="bg-white p-5 rounded shadow-md w-1/3">
                         <h2 className="text-lg font-semibold mb-4">Teacher Details</h2>
                         <p className='mb-1'><strong>Name:</strong> {selectedTeacher.name}</p>
                         <p className='mb-1'><strong>Email:</strong> {selectedTeacher.email}</p>

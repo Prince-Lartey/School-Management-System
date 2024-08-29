@@ -6,11 +6,14 @@ import axios from 'axios';
 const TeacherStudents = () => {
     const [isOpen, setIsOpen] = useState(true);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     // Retrieve grade from database
     const [grades, setGrades] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/grade')
+        axios.get(`${API_URL}/auth/grade`)
         .then(result => {
             if(result.data.Status) {
                 setGrades(result.data.Result)
@@ -25,7 +28,7 @@ const TeacherStudents = () => {
     const [addStudent, setAddStudent] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/student')
+        axios.get(`${API_URL}/auth/student`)
         .then(result => {
             if(result.data.Status) {
                 setAddStudent(result.data.Result)
@@ -41,7 +44,7 @@ const TeacherStudents = () => {
     const [studentDetails, setStudentDetails] = useState({});
 
     const openViewModal = (registrationNumber) => {
-        axios.get(`http://localhost:4000/auth/student/${registrationNumber}`)
+        axios.get(`${API_URL}/auth/student/${registrationNumber}`)
         .then(result => {
             if (result.data.Status) {
             setStudentDetails(result.data.Result[0]);

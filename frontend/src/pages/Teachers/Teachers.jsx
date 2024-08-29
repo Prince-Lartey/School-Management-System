@@ -6,10 +6,13 @@ import axios from 'axios';
 const TeacherTeachers = () => {
     const [isOpen, setIsOpen] = useState(true);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     // Get subject details
     const [subjects, setSubjects] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/subject')
+        axios.get(`${API_URL}/auth/subject`)
             .then(result => {
                 if (result.data.Status) {
                     setSubjects(result.data.Result);
@@ -23,7 +26,7 @@ const TeacherTeachers = () => {
     // Get teacher details
     const [teachers, setTeachers] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:4000/auth/teachers')
+        axios.get(`${API_URL}/auth/teachers`)
             .then(result => {
                 if (result.data.Status) {
                     console.log(result.data.Result)

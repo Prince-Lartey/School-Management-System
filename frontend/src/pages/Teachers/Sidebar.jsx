@@ -8,6 +8,10 @@ import { FaBookOpen, FaChartBar, FaChartLine, FaChevronDown, FaChevronUp, FaClip
 import { MdOutlineAssignment } from 'react-icons/md'
 
 const TeacherSidebar = ({ isOpen, setIsOpen }) => {
+
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     const navigate = useNavigate()
     
     const [isExamsOpen, setIsExamsOpen] = useState(false);
@@ -27,7 +31,7 @@ const TeacherSidebar = ({ isOpen, setIsOpen }) => {
 
     axios.defaults.withCredentials = true
     const handleLogout = () => {
-        axios.get('http://localhost:4000/teacher/logout')
+        axios.get(`${API_URL}/teacher/logout`)
         .then(result => {
             if (result.data.Status) {
                 localStorage.clear();

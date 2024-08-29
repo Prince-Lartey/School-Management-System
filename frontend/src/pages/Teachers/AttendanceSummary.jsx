@@ -14,9 +14,12 @@ const TeacherAttendanceSummary = () => {
     const [attendanceRecordsByStudent, setAttendanceRecordsByStudent] = useState([]);
     const [attendanceRecordsByDate, setAttendanceRecordsByDate] = useState([]);
 
+    // Get the API URL from the environment variable
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
+
     useEffect(() => {
         // Fetch the list of students
-        axios.get('http://localhost:4000/auth/student')
+        axios.get(`${API_URL}/auth/student`)
             .then(result => {
                 if (result.data.Status) {
                     setStudents(result.data.Result);
@@ -27,7 +30,7 @@ const TeacherAttendanceSummary = () => {
             .catch(error => console.log(error));
 
         // Fetch the list of recorded dates
-        axios.get('http://localhost:4000/auth/recorded_dates')
+        axios.get(`${API_URL}/auth/recorded_dates`)
             .then(result => {
                 if (result.data.Status) {
                     setDates(result.data.Result);
@@ -45,7 +48,7 @@ const TeacherAttendanceSummary = () => {
 
         if (studentId) {
             // Fetch attendance summary for the selected student
-            axios.get('http://localhost:4000/auth/attendance_summary', { params: { registrationNumber: studentId } })
+            axios.get(`${API_URL}/auth/attendance_summary`, { params: { registrationNumber: studentId } })
                 .then(result => {
                     if (result.data.Status) {
                         setAttendanceRecordsByStudent(result.data.Result);
@@ -76,7 +79,7 @@ const TeacherAttendanceSummary = () => {
 
         if (date) {
             // Fetch attendance summary for the selected date
-            axios.get('http://localhost:4000/auth/attendance_details_by_date', { params: { date } })
+            axios.get(`${API_URL}/auth/attendance_details_by_date`, { params: { date } })
                 .then(result => {
                     if (result.data.Status) {
                         setAttendanceRecordsByDate(result.data.Result);

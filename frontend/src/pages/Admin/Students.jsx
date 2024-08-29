@@ -321,7 +321,7 @@ const Students = () => {
 
             {viewModal && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-5 rounded shadow-md w-1/2">
+                    <div className="bg-white p-5 rounded shadow-md w-1/3">
                         <h2 className="text-lg font-bold mb-4">Student Details</h2>
                         <p className='mb-2'><strong>Name:</strong> {studentDetails.name}</p>
                         <p className='mb-2'><strong>Registration Number:</strong> {studentDetails.registrationNumber}</p>
