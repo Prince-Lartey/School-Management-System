@@ -9,7 +9,7 @@ const TeacherAnnouncement = () => {
     const [message, setMessage] = useState('')
     const [announcement, setAnnouncement] = useState([])
 
-    const API_URL = import.meta.env.VITE_DEV_BASE_URL;
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
 
     const handleSubmit = (e) => {
         e.preventDefault()

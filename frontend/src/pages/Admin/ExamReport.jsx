@@ -12,7 +12,7 @@ const ExamReport = () => {
     const [comment, setComment] = useState('');
 
     // Get the API URL from the environment variable
-    const API_URL = import.meta.env.VITE_DEV_BASE_URL;
+    const API_URL = import.meta.env.VITE_PROD_BASE_URL;
 
     useEffect(() => {
         // Fetch all students
