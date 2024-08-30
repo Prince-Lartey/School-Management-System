@@ -16,6 +16,19 @@ const Grades = () => {
     // Get the API URL from the environment variable
     const API_URL = import.meta.env.VITE_PROD_BASE_URL;
 
+    // Function to fetch all grades from the server
+    const fetchGrades = () => {
+        axios.get(`${API_URL}/auth/grade`)
+            .then(result => {
+                if (result.data.Status) {
+                    setGrade(result.data.Result);
+                } else {
+                    alert(result.data.Error);
+                }
+            })
+            .catch(error => console.log(error));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -45,6 +58,7 @@ const Grades = () => {
                     progress: undefined,
                 });
                 setGradeName('');
+                fetchGrades(); // Fetch updated grades after successful addition
             }else {
                 alert(result.data.Error)
             }
@@ -53,16 +67,8 @@ const Grades = () => {
     }
 
     useEffect(() => {
-        axios.get(`${API_URL}/auth/grade`)
-        .then(result => {
-            if(result.data.Status) {
-                setGrade(result.data.Result)
-            } else {
-                alert(result.data.Error)
-            }
-        })
-        .catch(error => console.log(error))
-    }, [])
+        fetchGrades(); // Fetch grades when the component mounts
+    }, []);
 
     const toggleDropdown = (gradeId) => {
         if (openGradeId === gradeId) {
@@ -94,7 +100,7 @@ const Grades = () => {
                 <div className='p-5'>
                     <h2 className='text-2xl mb-5 font-semibold text-[#333333]'>Grades</h2>
                     <form className='mb-10'>
-                        <input type='text' placeholder='Enter Grade Name'  className="p-2 mr-2.5 border border-gray-300 rounded" onChange={(e) => setGradeName(e.target.value)} />
+                        <input type='text' placeholder='Enter Grade Name' value={gradeName}  className="p-2 mr-2.5 border border-gray-300 rounded" onChange={(e) => setGradeName(e.target.value)} />
                         <button type='submit' className="py-2 px-4 bg-blue-500 text-white border-none rounded cursor-pointer hover:bg-blue-700 transition-colors duration-300" onClick={handleSubmit}>Add Grade</button>
                     </form>
 

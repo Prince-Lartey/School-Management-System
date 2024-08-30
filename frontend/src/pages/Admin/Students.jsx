@@ -96,6 +96,24 @@ const Students = () => {
                     draggable: true,
                     progress: undefined,
                 });
+
+                // Add the new student to the list
+                setAddStudent(prevStudents => [...prevStudents, studentWithNumber]);
+
+                // Reset form fields after submission
+                setStudent({
+                    name: '',
+                    registrationNumber: '',
+                    email: '',
+                    password: '',
+                    grade_id: '',
+                    gender_id: '',
+                    guardianPhone: ''
+                });
+
+                // Generate a new registration number after the student is added
+                const newCode = generateRegistrationNumber();
+                setRegistrationNumber(newCode);
             }else {
                 console.log(result.data.Error)
             }
@@ -246,23 +264,23 @@ const Students = () => {
                 <div className='p-5'>
                     <h2 className='text-2xl mb-5 font-semibold text-[#333333]'>Students</h2>
                     <form className='mb-10'>
-                        <input type='text' placeholder='Student Name' className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, name: e.target.value})}/>
+                        <input type='text' placeholder='Student Name' value={student.name} className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, name: e.target.value})}/>
                         <input type='number' id="registrationCode" name="registrationCode" value={registrationNumber} readOnly placeholder='Registration Number' className="p-2  mr-2.5 mt-2.5 border border-gray-300 rounded"/>
-                        <input type='email' placeholder='Email'  className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, email: e.target.value})}/>
-                        <input type='password' placeholder='Password'  className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, password: e.target.value})}/>
-                        <select name="gender" id="gender" required className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, gender_id: e.target.value})}>
+                        <input type='email' placeholder='Email' value={student.email}  className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, email: e.target.value})}/>
+                        <input type='password' placeholder='Password' value={student.password} className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, password: e.target.value})}/>
+                        <select name="gender" id="gender" value={student.gender_id} required className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, gender_id: e.target.value})}>
                             <option value="" className='text-gray-500'>Select Gender</option>
                             {gender.map(gender => {
                                 return <option key={gender.id} value={gender.id}>{gender.name}</option>
                             })}
                         </select>
-                        <select name="grade" id="grade" required className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, grade_id: e.target.value})}>
+                        <select name="grade" id="grade" value={student.grade_id} required className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, grade_id: e.target.value})}>
                             <option value="" className='text-gray-500'>Select Grade</option>
                             {grades.map(grade => {
                                 return <option key={grade.id} value={grade.id}>{grade.gradeName}</option>
                             })}
                         </select>
-                        <input type='text' placeholder='Guardian Phone Number' className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, guardianPhone: e.target.value})}/>
+                        <input type='text' placeholder='Guardian Phone Number' value={student.guardianPhone} className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setStudent({...student, guardianPhone: e.target.value})}/>
                         <button type='submit' className="py-2 px-4 mt-2.5 bg-blue-500 text-white border-none rounded cursor-pointer block hover:bg-blue-700 transition-colors duration-300" onClick={handleSubmit}>Add Student</button>
                     </form>
 

@@ -51,6 +51,7 @@ const Library = () => {
                     draggable: true,
                     progress: undefined,
                 });
+                fetchBooks()
 
                 setLibrary({
                     bookname: '',
@@ -67,7 +68,7 @@ const Library = () => {
     // Retrieve books from database
     const [addBook, setAddBook] = useState([])
 
-    useEffect(() => {
+    const fetchBooks = () => {
         axios.get(`${API_URL}/auth/book`)
         .then(result => {
             if(result.data.Status) {
@@ -77,6 +78,10 @@ const Library = () => {
             }
         })
         .catch(error => console.log(error))
+    }
+
+    useEffect(() => {
+        fetchBooks()
 
         // Retrieve borrow requests for notifications
         axios.get(`${API_URL}/auth/borrow_requests`)
@@ -239,12 +244,14 @@ const Library = () => {
                         <h2 className='font-semibold mb-2'>Add New Book</h2>
                         <div className='mb-2.5'>
                             <label htmlFor='title' className='block mb-[5px]'>Title</label>
-                            <input type='text' id='title' className='w-full p-2 text-base border border-gray-300 rounded-md' onChange={(e) => setLibrary({...library, bookname: e.target.value})}/>
+                            <input type='text' id='title' value={library.bookname} className='w-full p-2 text-base border border-gray-300 rounded-md' onChange={(e) => setLibrary({...library, bookname: e.target.value})}/>
                         </div>
+
                         <div className='mb-2.5'>
                             <label htmlFor='author' className='block mb-[5px]'>Author</label>
-                            <input type='text' id='title' className='w-full p-2 text-base border border-gray-300 rounded-md' onChange={(e) => setLibrary({...library, author: e.target.value})}/>
+                            <input type='text' id='title' value={library.author} className='w-full p-2 text-base border border-gray-300 rounded-md' onChange={(e) => setLibrary({...library, author: e.target.value})}/>
                         </div>
+
                         <button type='submit' className='px-4 py-2 text-base bg-blue-500 text-white border-none rounded-md cursor-pointer hover:bg-blue-700 transition-colors duration-300' onClick={handleSubmit}>Add Book</button>
                     </form>
 

@@ -50,7 +50,20 @@ const TeacherExams = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('Submitting exam score:', examScore);
+        
+        // Validate that all fields are filled
+        if (!examScore.examRegCode.trim() || !examScore.registrationNumber.trim() || !examScore.marks.trim()) {
+            toast.error('All fields are required!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        }
 
         axios.post(`${API_URL}/auth/exam-results`, examScore)
         .then(result => {
@@ -63,6 +76,11 @@ const TeacherExams = () => {
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
+                })
+                setExamScore({
+                    examRegCode: '',
+                    registrationNumber: '',
+                    marks: ''
                 })
             }else {
                 toast.error('Failed to submit score', { autoClose: 5000 })
@@ -96,19 +114,22 @@ const TeacherExams = () => {
                 <div className='p-5'>
                 <h2 className='text-2xl mb-5 font-semibold text-[#333333]'>Exam Results</h2>
                     <form className='mb-10'>
-                        <select name="registration code" id="registration code" required className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setExamScore({...examScore, examRegCode: e.target.value})}>
+                        <select name="registration code" id="registration code" value={examScore.examRegCode} required className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setExamScore({...examScore, examRegCode: e.target.value})}>
                             <option value="" className='text-gray-500'>Select Registration Code</option>
                             {exam.map(exam => {
                                 return <option key={exam.registrationCode} value={exam.registrationCode}>{exam.registrationCode}</option>
                             })}
                         </select>
-                        <select name="student" id="student" required className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setExamScore({...examScore, registrationNumber: e.target.value})}>
+
+                        <select name="student" id="student" value={examScore.registrationNumber} required className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setExamScore({...examScore, registrationNumber: e.target.value})}>
                             <option value="" className='text-gray-500'>Select Student</option>
                             {student.map(student => {
                                 return <option key={student.registrationNumber} value={student.registrationNumber}>{student.name}</option>
                             })}
                         </select>
-                        <input type='number' placeholder='Add Marks' className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setExamScore({...examScore, marks: e.target.value})}/>
+
+                        <input type='number' value={examScore.marks} placeholder='Add Marks' className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setExamScore({...examScore, marks: e.target.value})}/>
+
                         <button type='submit' className="py-2 px-4 mt-2.5 bg-blue-500 text-white border-none rounded cursor-pointer hover:bg-blue-700 transition-colors duration-300" onClick={handleSubmit}>Submit Score</button>
                     </form>
 

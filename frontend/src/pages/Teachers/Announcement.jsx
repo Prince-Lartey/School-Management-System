@@ -39,6 +39,9 @@ const TeacherAnnouncement = () => {
                     draggable: true,
                     progress: undefined,
                 });
+                fetchAnnouncements()
+
+                setMessage('')
             }else {
                 alert(result.data.Error)
             }
@@ -46,7 +49,7 @@ const TeacherAnnouncement = () => {
         .catch(error => console.log(error))
     }
 
-    useEffect(() => {
+    const fetchAnnouncements = () => {
         axios.get(`${API_URL}/auth/announcement`)
         .then(result => {
             if(result.data.Status) {
@@ -56,6 +59,10 @@ const TeacherAnnouncement = () => {
             }
         })
         .catch(error => console.log(error))
+    }
+
+    useEffect(() => {
+        fetchAnnouncements()
     }, [])
 
     // Delete announcement
@@ -67,7 +74,7 @@ const TeacherAnnouncement = () => {
         axios.delete(`${API_URL}/auth/delete_announcement/` + announcementToDelete)
         .then(result => {
             if (result.data.Status){
-                toast.success('announcement removed successfully!', {
+                toast.success('Announcement removed successfully!', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -109,7 +116,7 @@ const TeacherAnnouncement = () => {
                     <form className='mb-10'>
                         <div className='mb-2.5'>
                             <label htmlFor='announcement' className='block mb-[5px]'>Message: </label>
-                            <textarea required rows={4} cols={20} className='w-full p-2 text-base border border-gray-300 rounded-md' onChange={(e) => setMessage(e.target.value)}></textarea>
+                            <textarea required rows={4} cols={20} className='w-full p-2 text-base border border-gray-300 rounded-md' value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
                         </div>
                         <button type='submit' className='px-4 py-2 text-base bg-blue-500 text-white border-none rounded-md cursor-pointer hover:bg-blue-700 transition-colors duration-300' onClick={handleSubmit}>Send Announcement</button>
                     </form>

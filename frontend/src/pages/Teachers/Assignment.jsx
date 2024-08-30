@@ -78,6 +78,17 @@ const TeacherAssignment = () => {
                     draggable: true,
                     progress: undefined,
                 });
+                // Add the new assignment to the list and reset the form
+                fetchAssignments();
+
+                 // Reset form fields after submission
+                setAssignment({
+                    subject_id: '',
+                    title: '',
+                    description: '',
+                    grade_id: '',
+                    deadline: ''
+                });
             }else {
                 console.log(result.data.Error)
             }
@@ -88,17 +99,21 @@ const TeacherAssignment = () => {
     // Retrieve assignment from database
     const [addAssignment, setAddAssignment] = useState([])
 
-    useEffect(() => {
+    const fetchAssignments = () => {
         axios.get(`${API_URL}/auth/assignment`)
         .then(result => {
             if(result.data.Status) {
-                setAddAssignment(result.data.Result)
+                setAddAssignment(result.data.Result);
             } else {
-                alert(result.data.Error)
+                alert(result.data.Error);
             }
         })
-        .catch(error => console.log(error))
-    }, [])
+        .catch(error => console.log(error));
+    };
+    
+    useEffect(() => {
+        fetchAssignments();
+    }, []);
 
     // State for editing student details
     const [editModal, setEditModal] = useState(false);
@@ -210,22 +225,26 @@ const TeacherAssignment = () => {
                 <div className='p-5'>
                     <h2 className='text-2xl mb-5 font-semibold text-[#333333]'>Assignments</h2>
                     <form className='mb-10'>
-                        <select name="subject" id="subject" required className="p-2.5 mb-2.5 border border-gray-300 rounded-md w-full" onChange={(e) => setAssignment({...assignment, subject_id: e.target.value})}>
+                        <select name="subject" id="subject" value={assignment.subject_id} required className="p-2.5 mb-2.5 border border-gray-300 rounded-md w-full" onChange={(e) => setAssignment({...assignment, subject_id: e.target.value})}>
                             <option value="">Select Subject</option>
                             {subjects.map(subject => {
                                 return <option key={subject.id} value={subject.id}>{subject.subjectName}</option>
                             })}
                         </select>
-                        <select name="grade" id="grade" required className="p-2.5 mb-2.5 border border-gray-300 rounded-md w-full" onChange={(e) => setAssignment({...assignment, grade_id: e.target.value})}>
+
+                        <select name="grade" id="grade" value={assignment.grade_id} required className="p-2.5 mb-2.5 border border-gray-300 rounded-md w-full" onChange={(e) => setAssignment({...assignment, grade_id: e.target.value})}>
                             <option value="">Select Grade</option>
                             {grades.map(grade => {
                                 return <option key={grade.id} value={grade.id}>{grade.gradeName}</option>
                             })}
                         </select>
-                        <input type='text' required placeholder='Enter Assignment Title' className="p-2.5 mb-2.5 border border-gray-300 rounded-md w-full" onChange={(e) => setAssignment({...assignment, title: e.target.value})} />
-                        <textarea placeholder='Enter Assignment description' className='p-2.5 mb-2.5 border border-gray-300 rounded-md w-full resize-y' onChange={(e) => setAssignment({...assignment, description: e.target.value})}></textarea>
+
+                        <input type='text' value={assignment.title} required placeholder='Enter Assignment Title' className="p-2.5 mb-2.5 border border-gray-300 rounded-md w-full" onChange={(e) => setAssignment({...assignment, title: e.target.value})} />
+
+                        <textarea value={assignment.description} placeholder='Enter Assignment description' className='p-2.5 mb-2.5 border border-gray-300 rounded-md w-full resize-y' onChange={(e) => setAssignment({...assignment, description: e.target.value})}></textarea>
                         
-                        <input type="date" required placeholder='Enter Assignment Deadline' className="p-2.5 mb-2.5 border border-gray-300 rounded-md w-full" min={moment().format('YYYY-MM-DD')} onChange={(e) => setAssignment({...assignment, deadline: e.target.value})}/>
+                        <input type="date" value={assignment.deadline} required placeholder='Enter Assignment Deadline' className="p-2.5 mb-2.5 border border-gray-300 rounded-md w-full" min={moment().format('YYYY-MM-DD')} onChange={(e) => setAssignment({...assignment, deadline: e.target.value})}/>
+
                         <button type='submit' className='px-4 py-2 bg-blue-600 text-white rounded-md cursor-pointer hover:bg-blue-700 transition-colors duration-300' onClick={handleSubmit}>Add Assignment</button>
                     </form>
 
@@ -291,7 +310,7 @@ const TeacherAssignment = () => {
                                 ))}
                             </select>
 
-                            <input type="date" value={assignmentToEdit.deadline} onChange={(e) => setAssignmentToEdit({ ...assignmentToEdit, deadline: e.target.value })} className="p-2 mb-2 w-full border border-gray-300 rounded"/>
+                            <input type="date" value={assignmentToEdit.deadline} min={moment().format('YYYY-MM-DD')} onChange={(e) => setAssignmentToEdit({ ...assignmentToEdit, deadline: e.target.value })} className="p-2 mb-2 w-full border border-gray-300 rounded"/>
                             
                             <div className="flex justify-end mt-4">
                                 <button type="button" className="py-2 px-4 bg-gray-200 text-gray-700 rounded mr-2 hover:bg-gray-300" onClick={closeEditModal}>Cancel</button>

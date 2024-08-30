@@ -177,12 +177,12 @@ const Teachers = () => {
                 <div className='p-5'>
                     <h2 className='text-2xl mb-5 font-semibold text-[#333333]'>Teachers</h2>
                     <form className='mb-5 '>
-                        <input type='text' required placeholder='Name' className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, name: e.target.value })}/>
-                        <input type='email' required placeholder='Email' className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, email: e.target.value })} />
-                        <input type='password' required placeholder='Password' className="p-2 mt-2.5 mr-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, password: e.target.value })}/>
-                        <input type='phone' required placeholder='Phone Number' className="p-2 mt-2.5 mr-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, phone: e.target.value })}/>
-                        <input type='text' required placeholder='Address: 123 Main Street' className="p-2 mt-2.5 mr-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, address: e.target.value })} />
-                        <input type='text' required placeholder='Qualification' className="p-2 mt-2.5 mr-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, qualification: e.target.value })}/>
+                        <input type='text' value={teacher.name} required placeholder='Name' className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, name: e.target.value })}/>
+                        <input type='email' value={teacher.email} required placeholder='Email' className="p-2 mr-2.5 mt-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, email: e.target.value })} />
+                        <input type='password' value={teacher.password} required placeholder='Password' className="p-2 mt-2.5 mr-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, password: e.target.value })}/>
+                        <input type='phone' value={teacher.phone} required placeholder='Phone Number' className="p-2 mt-2.5 mr-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, phone: e.target.value })}/>
+                        <input type='text' value={teacher.address} required placeholder='Address: 123 Main Street' className="p-2 mt-2.5 mr-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, address: e.target.value })} />
+                        <input type='text' value={teacher.qualification} required placeholder='Qualification' className="p-2 mt-2.5 mr-2.5 border border-gray-300 rounded" onChange={(e) => setTeacher({ ...teacher, qualification: e.target.value })}/>
                         <div>
                             <select multiple name="subjects" id="subjects" className='p-2 mb-2.5 mt-2.5 border border-gray-300 rounded-md' onChange={handleSubjectChange}>
                             <option value="" className='text-gray-500'>Select Subject/s</option>

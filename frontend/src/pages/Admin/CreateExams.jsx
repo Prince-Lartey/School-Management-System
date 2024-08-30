@@ -42,8 +42,11 @@ const CreateExams = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
 
+        // Add the registration code to the exam object
+        const examWithCode = { ...exam, registrationCode };
+
         // Validate that all fields are filled
-        if (!exam.examName.trim() || !exam.subject_id.trim() || !exam.registrationCode.trim() || !exam.marks.trim()) {
+        if (!examWithCode.examName.trim() || !examWithCode.subject_id.trim() || !examWithCode.registrationCode.trim() || !examWithCode.marks.trim()) {
             toast.error('All fields are required!', {
                 position: "top-right",
                 autoClose: 5000,
@@ -56,8 +59,6 @@ const CreateExams = () => {
             return;
         }
         
-        const examWithCode = { ...exam, registrationCode };
-
         axios.post(`${API_URL}/auth/create_exam`, examWithCode)
         .then(result => {
             if (result.data.Status) {
@@ -70,6 +71,14 @@ const CreateExams = () => {
                     draggable: true,
                     progress: undefined,
                 });
+                fetchExams()
+
+                setExam({
+                    examName: '',
+                    subject_id: '',
+                    registrationCode: '',
+                    marks: ''
+                })
             }else {
                 console.log(result.data.Error)
             }
@@ -80,7 +89,7 @@ const CreateExams = () => {
     // Retrieve exam details from database
     const [addExam, setAddExam] = useState([])
 
-    useEffect(() => {
+    const fetchExams = () => {
         axios.get(`${API_URL}/auth/exam`)
         .then(result => {
             if(result.data.Status) {
@@ -90,6 +99,10 @@ const CreateExams = () => {
             }
         })
         .catch(error => console.log(error))
+    }
+
+    useEffect(() => {
+        fetchExams()
     }, [])
 
     // Retrieve subject to create a dropdown
@@ -218,18 +231,22 @@ const CreateExams = () => {
                     <h1 className='text-2xl mb-5 font-semibold text-[#333333]'>Exams Details</h1>
                     <form className='flex flex-col max-w-[400px] mb-10'>
                         <label className='mb-2.5'>Name: </label>
-                        <input type='text' required className='p-2 mb-2.5 border border-gray-300 rounded-md' onChange={(e) => setExam({...exam, examName: e.target.value})}/>
+                        <input type='text' value={exam.examName} required className='p-2 mb-2.5 border border-gray-300 rounded-md' onChange={(e) => setExam({...exam, examName: e.target.value})}/>
+
                         <label className='mb-2.5'>Subject: </label>
-                        <select name="subject" id="subject" required type='text' className='p-2 mb-2.5 border border-gray-300 rounded-md ' onChange={(e) => setExam({...exam, subject_id: e.target.value})}>
+                        <select name="subject" id="subject" value={exam.subject_id} required type='text' className='p-2 mb-2.5 border border-gray-300 rounded-md ' onChange={(e) => setExam({...exam, subject_id: e.target.value})}>
                             <option value="">Select Subject</option>
                             {subjects.map(subject => {
                                 return <option key={subject.id} value={subject.id}>{subject.subjectName}</option>
                             })}
                         </select>
+
                         <label htmlFor="registrationCode" className='mb-2.5'>Registration Code: </label>
                         <input type='text' id="registrationCode" name="registrationCode" value={registrationCode} readOnly className='p-2 mb-2.5 border border-gray-300 rounded-md '/>
+
                         <label className='mb-2.5'>Marks: </label>
-                        <input type='number' required className='p-2 mb-2.5 border border-gray-300 rounded-md' onChange={(e) => setExam({...exam, marks: e.target.value})}/>
+                        <input type='number' value={exam.marks} required className='p-2 mb-2.5 border border-gray-300 rounded-md' onChange={(e) => setExam({...exam, marks: e.target.value})}/>
+                        
                         <button type='submit' className='px-5 py-2 bg-blue-500 text-white rounded-md cursor-pointer hover:bg-blue-700 transition-colors duration-300' onClick={handleSubmit}>Add Exam</button>
                     </form>
 

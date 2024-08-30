@@ -12,6 +12,18 @@ const Subject = () => {
     // Get the API URL from the environment variable
     const API_URL = import.meta.env.VITE_PROD_BASE_URL;
 
+    const fetchSubjects = () => {
+        axios.get(`${API_URL}/auth/subject`)
+        .then(result => {
+            if(result.data.Status) {
+                setSubject(result.data.Result)
+            } else {
+                alert(result.data.Error)
+            }
+        })
+        .catch(error => console.log(error))
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -40,6 +52,8 @@ const Subject = () => {
                     draggable: true,
                     progress: undefined,
                 });
+                setSubjectName('')
+                fetchSubjects()
             }else {
                 alert(result.data.Error)
             }
@@ -48,15 +62,7 @@ const Subject = () => {
     }
 
     useEffect(() => {
-        axios.get(`${API_URL}/auth/subject`)
-        .then(result => {
-            if(result.data.Status) {
-                setSubject(result.data.Result)
-            } else {
-                alert(result.data.Error)
-            }
-        })
-        .catch(error => console.log(error))
+        fetchSubjects()
     }, [])
 
     return (
@@ -66,7 +72,7 @@ const Subject = () => {
                 <div className='p-5'>
                     <h2 className='text-2xl mb-5 font-semibold text-[#333333]'>Subjects</h2>
                     <form className='mb-10'>
-                        <input type='text' placeholder='Enter Subject Name'  className="p-2 w-[400px] mr-2.5 border border-gray-300 rounded"  onChange={(e) => setSubjectName(e.target.value)}/>
+                        <input type='text' placeholder='Enter Subject Name' value={subjectName}  className="p-2 w-[400px] mr-2.5 border border-gray-300 rounded"  onChange={(e) => setSubjectName(e.target.value)}/>
                         <button type='submit' className="py-2 px-4 mt-2.5 bg-blue-500 text-white border-none rounded cursor-pointer hover:bg-blue-700 transition-colors duration-300" onClick={handleSubmit}>Add Subject</button>
                     </form>
 

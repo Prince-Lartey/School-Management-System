@@ -20,18 +20,6 @@ const TeacherEvents = () => {
         description: ''
     });
 
-    useEffect(() => {
-        axios.get(`${API_URL}/auth/events`)
-            .then(result => {
-                if (result.data.Status) {
-                    setEvents(result.data.Result);
-                } else {
-                    console.log(result.data.Error);
-                }
-            })
-            .catch(error => console.log(error));
-    }, []);
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -61,12 +49,35 @@ const TeacherEvents = () => {
                         draggable: true,
                         progress: undefined,
                     });
+                    fetchEvents()
+
+                    setEvent({
+                        date: new Date(),
+                        title: '',
+                        description: ''
+                    })
                 } else {
                     console.log(result.data.Error);
                 }
             })
             .catch(error => console.log(error));
     };
+
+    const fetchEvents = () => {
+        axios.get(`${API_URL}/auth/events`)
+            .then(result => {
+                if (result.data.Status) {
+                    setEvents(result.data.Result);
+                } else {
+                    console.log(result.data.Error);
+                }
+            })
+            .catch(error => console.log(error));
+    }
+
+    useEffect(() => {
+        fetchEvents()
+    }, []);
 
     // Delete event
     const [showModal, setShowModal] = useState(false);
@@ -112,7 +123,7 @@ const TeacherEvents = () => {
 
 
     const formatDate = (dateString) => {
-        return moment(dateString).format('DD-MM-YYYY')
+        return moment(dateString).format('DD MMM YYYY')
     };
 
     return (
@@ -125,13 +136,17 @@ const TeacherEvents = () => {
                             <h2 className='font-semibold text-[#333333] mb-2'>Select Date</h2>
                             <DatePicker
                                 selected={(event.date)}
+                                value={event.date}
                                 onChange={(date) => setEvent({ ...event, date })}
                                 className='mb-5 border-2 rounded p-2'
                                 minDate={new Date()}
                             />
+
                             <h2 className='font-semibold text-[#333333] mb-2'>Add New Event</h2>
                             <input type='text' value={event.title} placeholder='Enter Event Title' className='flex-1 p-2 border border-gray-300 rounded-md mb-5' onChange={(e) => setEvent({ ...event, title: e.target.value })}/>
+
                             <input type='text' value={event.description} placeholder='Enter Event Details' className='flex-1 p-2 border border-gray-300 rounded-md w-full mb-5' onChange={(e) => setEvent({ ...event, description: e.target.value })}/>
+
                             <button type='submit' className='px-4 py-2 text-base bg-blue-500 text-white border-none rounded-md cursor-pointer hover:bg-blue-700 transition-colors duration-300' onClick={handleSubmit}>Add Event</button>
                         </form>
                         
